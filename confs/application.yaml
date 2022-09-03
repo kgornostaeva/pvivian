@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-iot-app
+spec:
+  project: argocd-iot-project
+  source:
+    repoURL: https://github.com/kgornostaeva/pvivian
+    targetRevision: HEAD
+    path: p3/confs
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-iot-deployment
+  labels:
+    app: argocd-iot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: argocd-iot-app
+  template:
+    metadata:
+      labels:
+        app: argocd-iot-app
+    spec:
+      containers:
+        - name: wil-playground
+          image: wil42/playground:v1
+          ports:
+            - containerPort: 8888
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: argocd-iot-ingress
+  labels:
+    app: argocd-iot-app
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "false"
+    traefik.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /app
+            backend:
+              serviceName: argocd-iot-service
+              servicePort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-iot-service
+spec:
+  ports:
+    - port: 8888
+      protocol: TCP
+  selector:
+    app: argocd-iot-app

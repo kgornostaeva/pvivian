@@ -58,7 +58,7 @@ spec:
                 name: argocd-server
                 port:
                   number: 80
-EOF
+EOFkubectl describe pod -n dev
 
 #kubectl port-forward svc/argocd-server -n argocd 8080:443
 

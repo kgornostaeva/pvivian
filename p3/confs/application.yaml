@@ -21,7 +21,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: argocd-iot-deployment
+  name: wil-playground
   labels:
     app: argocd-iot-app
 spec:
@@ -39,25 +39,6 @@ spec:
           image: wil42/playground:v1
           ports:
             - containerPort: 8888
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: argocd-iot-ingress
-  labels:
-    app: argocd-iot-app
-  annotations:
-    ingress.kubernetes.io/ssl-redirect: "false"
-    traefik.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /app
-            backend:
-              serviceName: argocd-iot-service
-              servicePort: 80
-
 ---
 apiVersion: v1
 kind: Service

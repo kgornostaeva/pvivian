@@ -61,5 +61,7 @@ spec:
 EOFkubectl describe pod -n dev
 
 #kubectl port-forward svc/argocd-server -n argocd 8080:443
+# kubectl port-forward svc/argocd-iot-service -n dev 8888
+
 
 kubectl apply -f confs/ingress.yaml -n argocd

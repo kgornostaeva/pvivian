@@ -72,6 +72,7 @@ Vagrant.configure("2") do |config|
             echo -e "\033[1;33mSetup argocd\033[0m\n"
             kubectl create namespace argocd
             kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+            kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
             kubectl apply -f /vagrant/confs/ingress.yaml -n argocd
 
@@ -82,8 +83,8 @@ Vagrant.configure("2") do |config|
               }}'
 
             kubectl create namespace dev
-            kubectl apply -f /vagrant/confs/project.yaml -n argocd
-            kubectl apply -f /vagrant/confs/application.yaml -n argocd
+            kubectl apply -f /vagrant/confs/project.yaml -n dev
+            kubectl apply -f /vagrant/confs/application.yaml -n dev
 
         SHELL
 	end

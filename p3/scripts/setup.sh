@@ -46,5 +46,5 @@ kubectl -n argocd patch secret argocd-secret \
   }}'
 
 kubectl create namespace dev
-kubectl apply -f /vagrant/confs/project.yaml -n argocd
+#kubectl apply -f /vagrant/confs/project.yaml -n argocd
 kubectl apply -f /vagrant/confs/application.yaml -n argocd

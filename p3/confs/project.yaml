@@ -13,3 +13,22 @@ spec:
       server: https://kubernetes.default.svc
   orphanedResources:
     warn: false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-iot-app
+spec:
+  project: argocd-iot-project
+  source:
+    repoURL: https://github.com/kgornostaeva/pvivian
+    targetRevision: HEAD
+    path: p3/confs
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      selfHeal: true

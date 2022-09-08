@@ -6,7 +6,6 @@ sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org
 sudo yum update -y
 yum install net-tools -y
 export PATH="/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"
-swapoff -a
 
 echo -e "\033[1;33mLoading k3d\033[0m\n"
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
@@ -25,13 +24,13 @@ echo -e "\033[1;33mLoading argocd\033[0m\n"
 sudo curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 sudo chmod +x /usr/local/bin/argocd
 
-echo -e "\033[1;33mStart docker\033[0m\n"
+echo -e "\033[1;33mStarting docker\033[0m\n"
 sudo usermod -aG docker vagrant
 newgrp docker
 sudo systemctl start docker
 sudo systemctl enable docker
 
-echo -e "\033[1;33mCreate cluster\033[0m\n"
+echo -e "\033[1;33mCreating cluster\033[0m\n"
 k3d cluster create iotcluster
 k3d kubeconfig merge iotcluster --kubeconfig-merge-default
 
@@ -46,5 +45,6 @@ kubectl -n argocd patch secret argocd-secret \
   }}'
 
 kubectl create namespace dev
-#kubectl apply -f /vagrant/confs/project.yaml -n argocd
-kubectl apply -f /vagrant/confs/application.yaml -n argocd
+kubectl apply -f /vagrant/confs/project.yaml -n argocd
+
+echo -e "\033[1;33mDone!\033[0m\n"

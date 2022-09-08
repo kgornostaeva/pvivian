@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: argocd-iot-project
+  labels:
+    app: argocd-iot-app
+spec:
+  description: Our ArgoCD Project to deploy our app locally
+  sourceRepos:
+    - "http://address/root/pvivian.git"
+  destinations:
+    - namespace: dev
+      server: https://kubernetes.default.svc
+  orphanedResources:
+    warn: false
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-iot-app
+spec:
+  project: argocd-iot-project
+  source:
+    repoURL: http://address/root/pvivian.git
+    targetRevision: HEAD
+    path: ./
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

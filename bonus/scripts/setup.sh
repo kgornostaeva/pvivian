@@ -57,7 +57,7 @@ sleep 20
 
 curl -v --request POST --header "Authorization: Bearer token-string-here123" \
 --header "Content-type: application/json" \
---data "$(jq -n --arg content "$(curl https://raw.githubusercontent.com/kgornostaeva/pvivian/master/p3/confs/deployment.yaml)" \
+--data "$(jq -n --arg content "$(curl https://raw.githubusercontent.com/kgornostaeva/pvivian/master/manifests/deployment.yaml)" \
         '{"branch": "master", "author_email": "root@example.com", "author_name": "Root", "content": $content, "commit_message": "Initial commit"}')" \
 "http://localhost/api/v4/projects/2/repository/files/deployment%2Eyaml"
 

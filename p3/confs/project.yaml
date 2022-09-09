@@ -23,7 +23,7 @@ spec:
   source:
     repoURL: https://github.com/kgornostaeva/pvivian
     targetRevision: HEAD
-    path: p3/confs
+    path: manifests
     directory:
       recurse: true
   destination:
